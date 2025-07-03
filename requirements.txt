@@ -1,0 +1,29 @@
+# requirements.txt - Dependencias del proyecto iGuanitas
+# Todas las librerías aquí listadas son necesarias para el funcionamiento completo del sistema.
+
+# Análisis y manipulación de datos
+pandas           # Estructuras de datos y análisis tabular
+numpy            # Operaciones numéricas y matemáticas avanzadas
+
+# Lectura y manipulación de archivos ofimáticos
+python-docx      # Extracción y manipulación de documentos .docx
+python-pptx      # Lectura de presentaciones .pptx
+openpyxl         # Acceso a archivos Excel modernos (.xlsx)
+xlrd             # Lectura de archivos Excel antiguos (.xls)
+pyxlsb           # Lectura de archivos Excel binarios (.xlsb)
+olefile          # Acceso a metadatos en archivos OLE (usado en .xls)
+
+# Archivos PDF y OCR
+PyPDF2           # Lectura y extracción de contenido de archivos PDF
+pdf2image        # Conversión de PDFs a imágenes para análisis
+pytesseract      # OCR (Reconocimiento óptico de caracteres) vía Tesseract
+Pillow           # Soporte de imágenes (requerido por pdf2image)
+
+# Interfaz gráfica (instalada por defecto con Python en la mayoría de los entornos)
+# tkinter        # Incluida por defecto en la mayoría de instalaciones de Python
+
+# Nota adicional: se requiere tener instalado en el sistema los siguientes paquetes:
+# - Tesseract OCR (https://github.com/tesseract-ocr/tesseract)
+# - Poppler para pdf2image (https://github.com/oschwartz10612/poppler-windows o apt install poppler-utils)
+
+# Fin de archivo de requerimientos
