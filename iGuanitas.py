@@ -1,79 +1,41 @@
-# comparador.py
+# iGuanitas.py
 
-import os                      # Operaciones con el sistema de archivos
-import datetime                # Manejo de fechas y horas
-import hashlib                 # Cálculo de hashes (SHA-256)
-import threading               # Hilos para no bloquear la interfaz
-import tkinter as tk           # Interfaz gráfica básica
-from tkinter import filedialog, messagebox, ttk  # Diálogos, mensajes y widgets avanzados
+import os
+import datetime
+import hashlib
+import threading
+import tkinter as tk
+from tkinter import filedialog, messagebox, ttk
 
-import pandas as pd            # Lectura y manejo de datos en tablas
-import numpy as np             # Operaciones numéricas
-from docx import Document      # Lectura de archivos .docx
-from PyPDF2 import PdfReader   # Lectura de archivos PDF
-from pptx import Presentation  # Lectura de archivos PowerPoint
-import openpyxl                # Lectura de archivos Excel .xlsx
-import olefile                 # Lectura de metadatos de archivos .xls
-import docx                    # Metadatos de archivos .docx
-from pdf2image import convert_from_path  # Convertir PDF a imágenes
-import pytesseract             # OCR para extraer texto de imágenes
+import pandas as pd
+import numpy as np
+from docx import Document
+from PyPDF2 import PdfReader
+from pptx import Presentation
+import openpyxl
+import olefile
+import docx
+from pdf2image import convert_from_path
+import pytesseract
 
-from license import LICENSE_TEXT  # Importa la licencia desde license.py
+from license import LICENSE_TEXT, show_license_and_get_acceptance
 
 # ----------------------
-# Bandera global de cancelación
+# Bandera global para cancelar procesos largos
 # ----------------------
 cancelar = False
 
 # ----------------------
-# Función: Mostrar la licencia y esperar aceptación
-# ----------------------
-def show_license_and_get_acceptance():
-    """Muestra un diálogo con el texto de la licencia y devuelve True si el usuario la acepta."""
-    dlg = tk.Tk()
-    dlg.title("Licencia de Uso")
-    dlg.geometry("700x500")
-
-    # Widget de texto para mostrar la licencia
-    txt = tk.Text(dlg, wrap="word")
-    txt.insert("1.0", LICENSE_TEXT)
-    txt.config(state="disabled")
-    txt.pack(fill=tk.BOTH, expand=True)
-
-    accepted = tk.BooleanVar(value=False)
-
-    def on_accept():
-        accepted.set(True)
-        dlg.destroy()
-
-    def on_decline():
-        dlg.destroy()
-
-    # Botones Acepto / No acepto
-    btn_frame = tk.Frame(dlg)
-    tk.Button(btn_frame, text="Acepto",   command=on_accept,   width=12).pack(side=tk.LEFT, padx=5, pady=5)
-    tk.Button(btn_frame, text="No acepto", command=on_decline,  width=12).pack(side=tk.LEFT, padx=5, pady=5)
-    btn_frame.pack()
-
-    dlg.mainloop()
-    return accepted.get()
-
-# ----------------------
-# Función: Extraer texto de PDFs basados en imágenes
+# Función: Extraer texto de un PDF escaneado (OCR)
 # ----------------------
 def extract_text_from_image_pdf(file_path):
-    """Convierte cada página del PDF a imagen y aplica OCR."""
     images = convert_from_path(file_path)
     return [pytesseract.image_to_string(img) for img in images]
 
 # ----------------------
-# Función: Lectura genérica de archivo según extensión
+# Función: Lectura genérica de archivos según su extensión
 # ----------------------
 def read_file(file_path):
-    """
-    Lee y extrae el contenido de un archivo.
-    Retorna lista de líneas (texto) o DataFrame (tablas).
-    """
     ext = os.path.splitext(file_path)[1].lower()
     try:
         if ext == '.xlsx':
@@ -96,7 +58,6 @@ def read_file(file_path):
         if ext == '.pdf':
             reader = PdfReader(file_path)
             pages = [p.extract_text() or "" for p in reader.pages]
-            # Si no extrae texto, usa OCR
             return pages if any(pages) else extract_text_from_image_pdf(file_path)
         if ext in ('.ppt', '.pptx'):
             prs = Presentation(file_path)
@@ -111,13 +72,9 @@ def read_file(file_path):
         raise RuntimeError(f"No se pudo leer {file_path}: {e}")
 
 # ----------------------
-# Función: Comparar dos listas de texto
+# Función: Compara dos listas de texto, devuelve % de diferencias
 # ----------------------
 def compare_lists(a, b):
-    """
-    Compara línea a línea dos listas de texto,
-    devuelve porcentaje de líneas diferentes.
-    """
     max_len = max(len(a), len(b))
     a += [""] * (max_len - len(a))
     b += [""] * (max_len - len(b))
@@ -125,14 +82,10 @@ def compare_lists(a, b):
     return round((diffs / max_len) * 100, 2) if max_len else 0.0
 
 # ----------------------
-# Función: Comparar múltiples archivos y mostrar progreso
+# Función: Compara todos los pares de archivos seleccionados
+#          Actualiza la interfaz con estado y progreso
 # ----------------------
 def compare_files(files, status_label, progress_bar):
-    """
-    Compara cada par de archivos en 'files'.
-    Actualiza etiqueta y barra de progreso.
-    Guarda resultados en CSV al terminar.
-    """
     global cancelar
     cancelar = False
     if len(files) < 2:
@@ -166,13 +119,13 @@ def compare_files(files, status_label, progress_bar):
                 continue
 
             current += 1
-            # Actualiza estado y progreso
-            status_label.config(text=f"Revisando {current}/{total}\n'{os.path.basename(a)}' vs '{os.path.basename(b)}'")
+            status_label.config(
+                text=f"Revisando {current}/{total}\n'{os.path.basename(a)}' vs '{os.path.basename(b)}'"
+            )
             progress_bar["value"] = (current / total) * 100
             status_label.update_idletasks()
             progress_bar.update_idletasks()
 
-            # Si es DataFrame (hoja de cálculo), compara celda a celda
             if isinstance(data_a, pd.DataFrame):
                 df1, df2 = data_a.copy(), data_b.copy()
                 mr, mc = max(df1.shape[0], df2.shape[0]), max(df1.shape[1], df2.shape[1])
@@ -185,7 +138,7 @@ def compare_files(files, status_label, progress_bar):
 
             results.append([os.path.basename(a), os.path.basename(b), pct])
 
-    # Guardar resultados como CSV
+    # Guardar resultados
     save = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV", "*.csv")])
     if save:
         pd.DataFrame(results, columns=["Archivo 1", "Archivo 2", "% Diferencia"]) \
@@ -196,10 +149,9 @@ def compare_files(files, status_label, progress_bar):
     progress_bar["value"] = 100
 
 # ----------------------
-# Función: Calcular hash SHA-256 de un archivo
+# Función: Calcula SHA-256 de un archivo
 # ----------------------
 def calcular_hash(path):
-    """Lee el archivo en bloques y devuelve su SHA-256."""
     try:
         h = hashlib.sha256()
         with open(path, 'rb') as f:
@@ -210,13 +162,9 @@ def calcular_hash(path):
         return "Error"
 
 # ----------------------
-# Función: Extraer metadatos de distintos tipos de archivo
+# Función: Extrae metadatos de archivos y devuelve lista de propiedades
 # ----------------------
 def extraer_metadatos(archivo):
-    """
-    Retorna lista [autor, último editor, fecha creación, fecha modificación]
-    según el tipo de archivo.
-    """
     ext = os.path.splitext(archivo)[1].lower()
     try:
         if ext == '.xlsx':
@@ -259,7 +207,6 @@ def extraer_metadatos(archivo):
             ]
         if ext == '.ppt':
             return ["No soportado"] * 4
-        # Texto plano y CSV: usa fechas del sistema de archivos
         stat = os.stat(archivo)
         c = datetime.datetime.fromtimestamp(stat.st_ctime).strftime("%Y-%m-%d %H:%M:%S")
         m = datetime.datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M:%S")
@@ -268,7 +215,7 @@ def extraer_metadatos(archivo):
         return ["Error"] * 4
 
 # ----------------------
-# Función: Mostrar metadatos en una tabla de la GUI
+# Función: Muestra metadatos en tabla dentro de la GUI
 # ----------------------
 def mostrar_metadatos(root):
     files = filedialog.askopenfilenames(
@@ -294,7 +241,6 @@ def mostrar_metadatos(root):
         tv.insert("", tk.END, values=row)
         data.append(row)
 
-    # Opción de guardar CSV con metadatos
     if messagebox.askyesno("Guardar CSV", "¿Guardar metadatos en CSV?"):
         path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV", "*.csv")])
         if path:
@@ -302,7 +248,7 @@ def mostrar_metadatos(root):
             messagebox.showinfo("Guardado", f"CSV guardado en {path}")
 
 # ----------------------
-# Función: Seleccionar archivos y lanzar hilo de comparación
+# Función: Selecciona archivos y lanza hilo para comparar
 # ----------------------
 def pick_files(tipo, exts, status_label, progress_bar):
     files = filedialog.askopenfilenames(filetypes=[(tipo, exts)])
@@ -314,40 +260,47 @@ def pick_files(tipo, exts, status_label, progress_bar):
         ).start()
 
 # ----------------------
-# Función: Marcar cancelación del proceso
+# Función: Marca la bandera para cancelar
 # ----------------------
 def cancelar_proceso():
     global cancelar
     cancelar = True
 
 # ----------------------
-# Función principal: arma la interfaz y coordina todo
+# Función: Muestra cuadro "Acerca de"
+# ----------------------
+def mostrar_acerca_de():
+    messagebox.showinfo(
+        "Acerca de",
+        "iGuanitas v1.0\nDesarrollado por TuNombre\n© 2025"
+    )
+
+# ----------------------
+# Función principal: arma la ventana y widgets
 # ----------------------
 def main():
-    # Mostrar licencia y validar aceptación
     if not show_license_and_get_acceptance():
         return
 
     root = tk.Tk()
-    root.title("Comparador de Archivos")
-    root.geometry("600x620")
+    root.title("iGuanitas - Comparador de Archivos")
+    root.geometry("600x660")
 
+    # Encabezado
     tk.Label(
         root,
         text="Selecciona qué tipo de documento comparar:",
         font=("Arial", 12)
     ).pack(pady=10)
 
-    status_label = tk.Label(
-        root, text="", fg="blue", font=("Arial", 10),
-        wraplength=580, justify="center"
-    )
+    # Estado y barra de progreso
+    status_label = tk.Label(root, text="", fg="blue", font=("Arial", 10),
+                            wraplength=580, justify="center")
     status_label.pack(pady=5)
-
     progress_bar = ttk.Progressbar(root, length=550, mode='determinate')
     progress_bar.pack(pady=5)
 
-    # Botones para cada tipo de archivo
+    # Botones de selección de tipo
     btn_specs = [
         ("📊 Hojas de cálculo", "*.xlsx *.xls *.xlsb *.csv"),
         ("📄 Texto plano",      "*.txt *.py"),
@@ -363,7 +316,7 @@ def main():
             command=lambda t=text, e=exts: pick_files(t, e, status_label, progress_bar)
         ).pack(pady=3)
 
-    # Botones adicionales: propiedades/hash y cancelar
+    # Botones adicionales
     tk.Button(
         root,
         text="🔍 Comparar Propiedades y Hash",
@@ -378,6 +331,14 @@ def main():
         width=60,
         command=cancelar_proceso
     ).pack(pady=5)
+
+    # Botón "Acerca de"
+    tk.Button(
+        root,
+        text="ℹ️ Acerca de",
+        width=60,
+        command=mostrar_acerca_de
+    ).pack(pady=10)
 
     root.mainloop()
 
