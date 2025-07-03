@@ -1,6 +1,6 @@
 ## Licencia
 
-Este software está disponible bajo la licencia **iGuanitas Source-Available No Comercial v5.0 (Blindada Definitiva)**.
+Este software está disponible bajo la licencia **iGuanitas Source-Available No Comercial v1.0 (Blindada Definitiva)**.
 
 - 📄 [Ver licencia completa](./LICENSE.md)
 
