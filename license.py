@@ -1,140 +1,155 @@
-# espejo.py
+# license.py
 
-import os
-import pandas as pd
-import numpy as np
-from tkinter import filedialog, messagebox
-from PyPDF2 import PdfReader
-from docx import Document
-from pptx import Presentation
-import openpyxl
+import tkinter as tk
 
-cancelar = False  # bandera global para cancelar proceso
+# Tu texto de licencia completo:
+LICENSE_TEXT = """
+iGuanitas Source-Available No Comercial License v5.0 (Blindada Definitiva)
 
-def read_file(path):
-    """Lee el contenido del archivo y devuelve DataFrame o lista."""
-    ext = os.path.splitext(path)[1].lower()
-    if ext in (".xlsx", ".xls", ".xlsb", ".csv"):
-        try:
-            if ext == ".csv":
-                return pd.read_csv(path, header=None, dtype=str, encoding="utf-8", error_bad_lines=False)
-            else:
-                return pd.read_excel(path, header=None, dtype=str, engine="openpyxl")
-        except Exception as e:
-            raise Exception(f"Error leyendo {os.path.basename(path)}: {e}")
-    elif ext in (".txt", ".py"):
-        try:
-            with open(path, "r", encoding="utf-8", errors="ignore") as f:
-                return [line.rstrip("\n") for line in f]
-        except Exception as e:
-            raise Exception(f"Error leyendo {os.path.basename(path)}: {e}")
-    elif ext == ".docx":
-        try:
-            doc = Document(path)
-            return [p.text for p in doc.paragraphs]
-        except Exception as e:
-            raise Exception(f"Error leyendo {os.path.basename(path)}: {e}")
-    elif ext == ".pdf":
-        try:
-            r = PdfReader(path)
-            return [page.extract_text() or "" for page in r.pages]
-        except Exception as e:
-            raise Exception(f"Error leyendo {os.path.basename(path)}: {e}")
-    elif ext == ".pptx":
-        try:
-            prs = Presentation(path)
-            texts = []
-            for slide in prs.slides:
-                for shape in slide.shapes:
-                    if hasattr(shape, "text"):
-                        texts.append(shape.text)
-            return texts
-        except Exception as e:
-            raise Exception(f"Error leyendo {os.path.basename(path)}: {e}")
-    else:
-        raise Exception(f"Extensión no soportada: {ext}")
+PREÁMBULO
+Esta licencia, basada en GNU AGPLv3, ha sido fortalecida para proteger de manera exhaustiva los derechos del autor y evitar cualquier uso comercial no autorizado, incluyendo procedimientos claros, definiciones precisas, sanciones, auditorías efectivas y mecanismos legales para garantizar cumplimiento absoluto.
 
-def compare_lists(list1, list2):
-    """Compara dos listas línea a línea y devuelve porcentaje de diferencia."""
-    max_len = max(len(list1), len(list2))
-    if max_len == 0:
-        return 0.0
-    diffs = sum(1 for a, b in zip(list1, list2) if a != b)
-    diffs += abs(len(list1) - len(list2))
-    return round((diffs / max_len) * 100, 2)
+TÉRMINOS Y CONDICIONES
 
-def compare_files(files, status_label, progress_bar):
-    """Compara todos los pares de archivos, muestra resumen y exporta CSV."""
-    global cancelar
-    cancelar = False
+0. DEFINICIONES CLARAS Y ABSOLUTAS
 
-    if len(files) < 2:
-        messagebox.showerror("Error", "Selecciona al menos dos archivos para comparar.")
-        return
+Este Software: Incluye el código fuente, binarios, documentación, datos, scripts, interfaces, material visual, y cualquier derivado parcial o total.
 
-    total = (len(files) * (len(files) - 1)) // 2
-    current = 0
-    results = []
+Uso Comercial: Cualquier uso que directa o indirectamente genere ingresos, beneficios económicos, reducción de costos en actividades lucrativas, explotación comercial, integración en productos o servicios con fines de lucro, prestación de servicios basados en el software, uso en entidades con fines lucrativos en cualquier etapa (desarrollo, pruebas, producción, capacitación, despliegue), uso en plataformas públicas o privadas con modelos de monetización, y cualquier otro aprovechamiento económico, tangible o intangible.
 
-    for i in range(len(files)):
-        for j in range(i + 1, len(files)):
-            if cancelar:
-                status_label.config(text="Proceso cancelado.")
-                return
+Organización sin fines de lucro: Entidad legalmente constituida cuya actividad excluye la distribución de ganancias y que cuenta con acreditación oficial.
 
-            f1, f2 = files[i], files[j]
-            name1, name2 = os.path.basename(f1), os.path.basename(f2)
-            try:
-                content1 = read_file(f1)
-                content2 = read_file(f2)
+Uso personal o doméstico: Uso exclusivamente individual, privado y sin relación laboral, contractual o económica con terceros.
 
-                if isinstance(content1, pd.DataFrame) and isinstance(content2, pd.DataFrame):
-                    # Reindex para igualar forma
-                    mr = max(content1.shape[0], content2.shape[0])
-                    mc = max(content1.shape[1], content2.shape[1])
-                    df1 = content1.reindex(index=range(mr), columns=range(mc), fill_value=np.nan)
-                    df2 = content2.reindex(index=range(mr), columns=range(mc), fill_value=np.nan)
-                    diff_mask = (df1 != df2) & ~(df1.isna() & df2.isna())
-                    pct_diff = round((diff_mask.sum().sum() / (mr * mc)) * 100, 2)
-                else:
-                    pct_diff = compare_lists(content1, content2)
+Contribuciones: Mejoras, modificaciones, correcciones o extensiones propuestas por usuarios sobre el software, que pueden ser enviadas al autor o mantenedor. Estas no generan derechos económicos, pero podrán recibir créditos a criterio del autor.
 
-                results.append({
-                    "Archivo 1": name1,
-                    "Archivo 2": name2,
-                    "% Diferencia": pct_diff
-                })
-            except Exception as e:
-                results.append({
-                    "Archivo 1": name1,
-                    "Archivo 2": name2,
-                    "% Diferencia": f"Error: {e}"
-                })
+1. ACEPTACIÓN EXPRESA Y OBLIGATORIA
 
-            current += 1
-            progress = (current / total) * 100
-            progress_bar['value'] = progress
-            status_label.config(text=f"Comparndo iguanas {current}/{total}...")
-            status_label.update_idletasks()
-            progress_bar.update_idletasks()
+Todo acto de uso, copia, modificación o distribución implica aceptación expresa, plena e incondicional de esta licencia.
 
-    # Mostrar resumen
-    summary = "\n".join(
-        f"{r['Archivo 1']} vs {r['Archivo 2']} → {r['% Diferencia']}%"
-        for r in results
-    )
-    messagebox.showinfo("Resultado de comparación", summary)
+En caso de duda o incertidumbre, el usuario deberá cesar todo uso hasta recibir confirmación escrita del autor.
 
-    # Guardar CSV
-    save_path = filedialog.asksaveasfilename(
-        defaultextension=".csv",
-        filetypes=[("CSV","*.csv")],
-        title="Guardar resultados como CSV"
-    )
-    if save_path:
-        df = pd.DataFrame(results)
-        df.to_csv(save_path, index=False, encoding="utf-8")
-        messagebox.showinfo("Guardado", f"Resultados guardados en:\n{save_path}")
+2. PERMISOS ESTRICTAMENTE LIMITADOS
 
-    status_label.config(text="Comparación completada.")
-    progress_bar['value'] = 100
+Solo se permite el uso en:
+
+* Contextos personales o domésticos.
+* Entornos educativos, académicos o de investigación sin fines comerciales, debidamente acreditados.
+* Organizaciones sin fines de lucro con documentación oficial.
+
+Cualquier otro uso —especialmente el uso comercial— está estrictamente prohibido sin licencia comercial previa, firmada y por escrito otorgada por el autor.
+
+3. MODIFICACIONES Y CONTRIBUCIONES
+
+Los usuarios podrán modificar el software, adaptarlo o mejorarlo, siempre que:
+
+* No obtengan beneficio económico directo ni indirecto de dichas modificaciones.
+* Las modificaciones se mantengan bajo esta misma licencia si son redistribuidas.
+* Cualquier contribución enviada al autor se entenderá como cedida sin fines lucrativos. El autor se reserva el derecho de integrar o no dichas contribuciones, con o sin atribución.
+
+4. PROHIBICIONES ABSOLUTAS
+
+* Uso comercial en cualquier forma sin licencia firmada del autor.
+* Sublicenciamiento, redistribución bajo otras licencias, o venta del software.
+* Eliminación o alteración de créditos, avisos de derechos o marcas.
+* Ingeniería inversa, descompilación o desensamblado con fines comerciales.
+* Uso del software para entrenar, minar, inferir o alimentar sistemas de inteligencia artificial con fines comerciales o lucrativos.
+* Uso indirecto que el autor determine, con base en criterios objetivos, como uso comercial encubierto (ver Anexo A).
+
+5. TERMINACIÓN AUTOMÁTICA
+
+Cualquier incumplimiento de esta licencia resultará en la suspensión automática e inmediata de todos los derechos de uso.
+
+El autor podrá notificar al infractor, otorgando un plazo máximo de 30 días naturales para subsanar la infracción.
+
+Si no se corrige o hay reincidencia, la licencia se da por terminada de forma irrevocable.
+
+Desde ese momento, todo uso, distribución o copia queda estrictamente prohibido, y podrán iniciarse acciones legales civiles o penales.
+
+6. EXCLUSIÓN DE GARANTÍAS Y RESPONSABILIDADES
+
+Este software se entrega “TAL CUAL”, sin garantías de ningún tipo, expresas o implícitas, incluyendo —pero no limitándose a—:
+
+* Garantías de comerciabilidad
+* Idoneidad para un propósito particular
+* No infracción
+* Disponibilidad, continuidad o funcionalidad libre de errores
+
+El autor no será responsable bajo ninguna circunstancia por:
+
+* Daños directos o indirectos, pérdidas de datos, interrupciones de actividad, perjuicios económicos, daños morales o de reputación.
+* Cualquier uso negligente, indebido o fraudulento del software por parte del usuario o terceros.
+* Cualquier consecuencia derivada del uso, mal uso o imposibilidad de uso del software.
+
+El uso del software es bajo entero riesgo del usuario.
+
+7. RESOLUCIÓN DE CONFLICTOS
+
+Toda controversia será primero sometida a mediación obligatoria.
+
+Si no se resuelve, se acudirá a arbitraje vinculante conforme a las leyes mexicanas en la ciudad de Monterrey, Nuevo León.
+
+Los costos del arbitraje serán asumidos por la parte que haya incumplido o que retrase el proceso sin justificación razonable.
+
+8. DURACIÓN Y VIGENCIA
+
+Esta licencia entra en vigor desde el momento de su aceptación. Tiene vigencia indefinida, salvo terminación anticipada por incumplimiento.
+
+Una vez finalizada, el usuario pierde todos los derechos de uso, copia, modificación o distribución.
+
+9. PROTECCIÓN CONTRA USO INDEBIDO POR TERCEROS
+
+El licenciatario será solidariamente responsable por el uso indebido o distribución no autorizada por terceros a quienes haya dado acceso.
+
+El autor podrá iniciar acciones legales directas contra terceros infractores.
+
+10. ACTUALIZACIONES Y CAMBIOS
+
+El autor podrá emitir nuevas versiones de esta licencia.
+
+El usuario podrá adoptar nuevas versiones voluntariamente.
+
+Cambios obligatorios solo se aplicarán por causas legales y con al menos 90 días naturales de aviso previo público.
+
+ANEXO A – CRITERIOS ABSOLUTOS DE USO COMERCIAL
+
+Se considerará uso comercial:
+
+1. Venta, alquiler o sublicencia directa o indirecta.
+2. Uso en procesos internos o externos de entidades con fines de lucro.
+3. Ofrecimiento del software como servicio (SaaS), hosting, plataforma o funcionalidad pagada.
+4. Integración en productos comerciales.
+5. Uso en entornos de automatización o infraestructura con objetivos económicos.
+6. Entrenamiento, minería o inferencia en modelos de IA con fines comerciales.
+7. Cualquier forma de beneficio económico derivado del uso.
+
+Quedan excluidos de esta categoría los usos personales, educativos o sin fines de lucro debidamente acreditados.
+
+FIN DE LICENCIA
+"""
+
+def show_license_and_get_acceptance():
+    """Muestra el texto de la licencia en un diálogo y devuelve True si el usuario acepta."""
+    dlg = tk.Tk()
+    dlg.title("Licencia de Uso - iGuanitas")
+    dlg.geometry("700x500")
+
+    txt = tk.Text(dlg, wrap="word")
+    txt.insert("1.0", LICENSE_TEXT)
+    txt.config(state="disabled")
+    txt.pack(fill=tk.BOTH, expand=True)
+
+    accepted = tk.BooleanVar(value=False)
+    def on_accept():
+        accepted.set(True)
+        dlg.destroy()
+    def on_decline():
+        dlg.destroy()
+
+    frame = tk.Frame(dlg)
+    tk.Button(frame, text="Acepto", command=on_accept, width=12).pack(side=tk.LEFT, padx=5, pady=5)
+    tk.Button(frame, text="No acepto", command=on_decline, width=12).pack(side=tk.LEFT, padx=5, pady=5)
+    frame.pack()
+
+    dlg.mainloop()
+    return accepted.get()
