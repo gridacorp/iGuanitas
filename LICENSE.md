@@ -117,7 +117,7 @@ El uso del software es bajo entero riesgo del usuario.
 
 Toda controversia será primero sometida a mediación obligatoria.
 
-Si no se resuelve, se acudirá a arbitraje vinculante conforme a las leyes mexicanas en la ciudad de Monterrey, Nuevo León.
+Si no se resuelve, se acudirá a arbitraje vinculante conforme a las leyes mexicanas en la ciudad de Torreon, Cohuila.
 
 Los costos del arbitraje serán asumidos por la parte que haya incumplido o que retrase el proceso sin justificación razonable.
 
@@ -308,7 +308,7 @@ Use of the software is entirely at the user’s own risk.
 
 All disputes shall first be submitted to mandatory mediation.
 
-If unresolved, disputes shall proceed to binding arbitration under Mexican law, in Monterrey, Nuevo León.
+If unresolved, disputes shall proceed to binding arbitration under Mexican law, in Torreon, Cohuila..
 
 Arbitration costs will be borne by the breaching or unjustifiably delaying party.
 
