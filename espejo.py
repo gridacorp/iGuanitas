@@ -8,10 +8,56 @@ from PyPDF2 import PdfReader
 from docx import Document
 from pptx import Presentation
 import openpyxl
-import pytesseract
-from pdf2image import convert_from_path
 
-from iGuanitas import read_file, compare_lists, cancelar
+cancelar = False  # bandera global para cancelar proceso
+
+def read_file(path):
+    """Lee el contenido del archivo y devuelve DataFrame o lista."""
+    ext = os.path.splitext(path)[1].lower()
+    if ext in (".xlsx", ".xls", ".xlsb", ".csv"):
+        try:
+            if ext == ".csv":
+                return pd.read_csv(path)
+            else:
+                return pd.read_excel(path)
+        except Exception as e:
+            raise Exception(f"Error leyendo {path}: {e}")
+    elif ext in (".txt", ".py"):
+        with open(path, "r", encoding="utf-8", errors="ignore") as f:
+            return f.readlines()
+    elif ext in (".docx",):
+        doc = Document(path)
+        return [p.text for p in doc.paragraphs]
+    elif ext in (".pdf",):
+        # Solo texto plano (más completo necesita OCR o pdfminer)
+        try:
+            r = PdfReader(path)
+            text = []
+            for page in r.pages:
+                text.append(page.extract_text())
+            return text
+        except Exception as e:
+            raise Exception(f"Error leyendo PDF {path}: {e}")
+    elif ext in (".pptx",):
+        prs = Presentation(path)
+        text = []
+        for slide in prs.slides:
+            for shape in slide.shapes:
+                if hasattr(shape, "text"):
+                    text.append(shape.text)
+        return text
+    else:
+        raise Exception(f"Extensión no soportada para comparación: {ext}")
+
+def compare_lists(list1, list2):
+    """Compara dos listas línea a línea y devuelve porcentaje de diferencia."""
+    max_len = max(len(list1), len(list2))
+    if max_len == 0:
+        return 0.0
+    diffs = sum(1 for a, b in zip(list1, list2) if a != b)
+    # Contar líneas extra que no coinciden
+    diffs += abs(len(list1) - len(list2))
+    return round((diffs / max_len) * 100, 2)
 
 def compare_files(files, status_label, progress_bar):
     global cancelar
@@ -27,51 +73,4 @@ def compare_files(files, status_label, progress_bar):
 
     for i in range(len(files)):
         if cancelar:
-            status_label.config(text="Proceso cancelado.")
-            return
-        a = files[i]
-        try:
-            data_a = read_file(a)
-        except Exception as e:
-            messagebox.showerror("Error", str(e))
-            continue
-
-        for j in range(i + 1, len(files)):
-            if cancelar:
-                status_label.config(text="Proceso cancelado.")
-                return
-            b = files[j]
-            try:
-                data_b = read_file(b)
-            except Exception as e:
-                messagebox.showerror("Error", str(e))
-                continue
-
-            current += 1
-            status_label.config(
-                text=f"Revisando {current}/{total}\n'{os.path.basename(a)}' vs '{os.path.basename(b)}'"
-            )
-            progress_bar["value"] = (current / total) * 100
-            status_label.update_idletasks()
-            progress_bar.update_idletasks()
-
-            if isinstance(data_a, pd.DataFrame):
-                df1, df2 = data_a.copy(), data_b.copy()
-                mr, mc = max(df1.shape[0], df2.shape[0]), max(df1.shape[1], df2.shape[1])
-                df1 = df1.reindex(index=range(mr), columns=range(mc), fill_value=np.nan)
-                df2 = df2.reindex(index=range(mr), columns=range(mc), fill_value=np.nan)
-                ch = (df1 != df2) & ~(df1.isna() & df2.isna())
-                pct = round((ch.sum().sum() / (mr * mc)) * 100, 2)
-            else:
-                pct = compare_lists(data_a, data_b)
-
-            results.append([os.path.basename(a), os.path.basename(b), pct])
-
-    save = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV", "*.csv")])
-    if save:
-        pd.DataFrame(results, columns=["Archivo 1", "Archivo 2", "% Diferencia"]) \
-          .to_csv(save, index=False, encoding="utf-8")
-        messagebox.showinfo("Listo", f"Guardado en {save}")
-
-    status_label.config(text="Comparación completada.")
-    progress_bar["value"] = 100
+            status_label.config(text="Proceso cancelado
