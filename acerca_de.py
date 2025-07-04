@@ -14,7 +14,7 @@ def mostrar_acerca_de():
 
     texto = (
         "Sobre iGuanitas Source‑Available No Comercial License v1.0\n"
-        "Copyright © 2025 Autor del software. Todos los derechos reservados.\n\n"
+        "Copyright © 2025 Jose Antonio Sifuentes Maltos. Todos los derechos reservados.\n\n"
         "Esta licencia, basada en GNU AGPLv3 y reforzada, protege estrictamente los derechos del autor "
         "y limita el uso exclusivamente a contextos no comerciales.\n"
         "Queda terminantemente prohibido cualquier uso comercial de este software sin una licencia comercial "
@@ -48,6 +48,11 @@ def mostrar_acerca_de():
         "- pdf2image\n"
         "- pytesseract\n\n"
         f"Titular autorizado de la licencia:\nUsuario: {usuario} | Equipo: {equipo}\n\n"
+        
+        "Aceptación de la licencia:"
+        "La utilización, descarga y/o ejecución por primera vez de esta aplicación implica la aceptación plena, " 
+        "incondicional y obligatoria de los términos y condiciones de esta licencia.\n\n"
+        
         "Denuncia por venta no autorizada:\n"
         "Si ha adquirido o le han ofrecido este software mediante venta o distribución no autorizada, "
         "denúncielo inmediatamente ante las autoridades competentes por violación de derechos de autor y fraude.\n\n"
@@ -56,3 +61,4 @@ def mostrar_acerca_de():
         "El uso no autorizado podrá acarrear sanciones civiles y penales, así como acciones legales por parte del autor."
     )
     messagebox.showinfo("Acerca de iGuanitas", texto)
+
