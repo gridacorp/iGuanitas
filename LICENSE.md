@@ -66,7 +66,7 @@ FIN DE LA LICENCIA
 
 iGuanitas Source-Available No Comercial  License v1.0
 
-Copyright (C) 2025 Author
+Copyright (C) 2025 Jose Antonio Sifuentes Maltos
 
 Everyone is permitted to copy and distribute verbatim copies of this license document, but modifying it is not allowed.
 
