@@ -1,5 +1,4 @@
-GNU Licencia Pública General Affero
-Versión 3, iGuanitas Source-Available No Comercial License v1.0
+iGuanitas Source-Available No Comercial  License v1.0
 
 Copyright (C) 2025 Jose Antonio Sifuentes Maltos
 
@@ -65,8 +64,7 @@ FIN DE LA LICENCIA
 
 +++++++++++++++++++++++++++++++++++++++++++++
 
-GNU Affero General Public License
-Version 3, iGuanitas Source-Available Non-Commercial License v1.0
+iGuanitas Source-Available No Comercial  License v1.0
 
 Copyright (C) 2025 Author
 
