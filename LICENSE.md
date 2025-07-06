@@ -1,378 +1,131 @@
-iGuanitas Source-Available No Comercial License v1.0
+GNU Licencia Pública General Affero
+Versión 3, iGuanitas Source-Available No Comercial License v1.0
+
+Copyright (C) 2025 Jose Antonio Sifuentes Maltos
+
+Todos tienen permiso para copiar y distribuir copias literales de este documento de licencia, pero no está permitido modificarlo.
 
 PREÁMBULO
-
-Esta licencia, basada en GNU AGPLv3, ha sido fortalecida para proteger de manera exhaustiva los derechos del autor y evitar cualquier uso comercial no autorizado, incluyendo procedimientos claros, definiciones precisas, sanciones, auditorías efectivas y mecanismos legales para garantizar cumplimiento absoluto.
+Este documento establece los términos de la Licencia Pública General Affero GNU versión 3, adaptada y reforzada con restricciones de uso comercial y disposiciones de telemetría y privacidad. El propósito es garantizar la libertad de usar, estudiar, compartir y modificar el software, al mismo tiempo que se prohíbe expresamente cualquier explotación comercial sin una licencia escrita separada otorgada por el Autor.
 
 TÉRMINOS Y CONDICIONES
 
-0. DEFINICIONES CLARAS Y ABSOLUTAS
+0. DEFINICIONES
+   a) Software: el código fuente, binarios, documentación, datos, scripts, interfaces, materiales visuales y cualquier trabajo derivado.
+   b) Tú (o Licenciatario): la persona o entidad que ejerce derechos bajo esta licencia.
+   c) Uso Comercial: cualquier uso que genere ingresos o beneficios económicos, reduzca costos en actividades con fines de lucro o implique integración en productos o servicios con ánimo de lucro.
+   d) Uso No Comercial: uso exclusivamente personal, doméstico, educativo, académico, de investigación o en organizaciones sin fines de lucro.
+   e) Propagar y Convey: significados dados en las Secciones 1 y 5 de la AGPLv3.
+   f) AGPLv3: GNU Affero General Public License versión 3.
 
+1. CÓDIGO FUENTE
+   El Código Fuente Correspondiente incluye todo el código fuente necesario para generar, instalar y ejecutar el código objeto y modificar el trabajo, incluidos los scripts de control de reparación y actualización.
 
+2. PERMISOS BÁSICOS
+   Tienes permiso para ejecutar, propagar y modificar el software para Uso No Comercial, sujeto a las restricciones de la Sección 6.
 
-Este Software: Incluye el código fuente, binarios, documentación, datos, scripts, interfaces, material visual, y cualquier derivado parcial o total.
+3. PROTECCIÓN CONTRA LEYES DE CIRCUNVENCIÓN
+   Ningún trabajo cubierto se considerará parte de una medida efectiva de protección tecnológica bajo la ley aplicable.
 
-Uso Comercial: Cualquier uso que directa o indirectamente genere ingresos, beneficios económicos, reducción de costos en actividades lucrativas, explotación comercial, integración en productos o servicios con fines de lucro, prestación de servicios basados en el software, uso en entidades con fines lucrativos en cualquier etapa (desarrollo, pruebas, producción, capacitación, despliegue), uso en plataformas públicas o privadas con modelos de monetización, y cualquier otro aprovechamiento económico, tangible o intangible.
+4. OBLIGACIONES AL PROPAGAR
+   a) Disponibilidad del código fuente: Debes poner a disposición el Código Fuente Correspondiente bajo los términos de esta licencia.
+   b) Uso en red: Si modificas el software y lo ejecutas como servicio en red, debes ofrecer a todos los usuarios acceso al Código Fuente Correspondiente.
 
-Organización sin fines de lucro: Entidad legalmente constituida cuya actividad excluye la distribución de ganancias y que cuenta con acreditación oficial.
+5. DISTRIBUCIÓN DE FORMAS NO FUENTE
+   Puedes distribuir código objeto bajo los términos de la Sección 6 de la AGPLv3, siempre que cumplas con los requisitos de Uso No Comercial.
 
-Uso personal o doméstico: Uso exclusivamente individual, privado y sin relación laboral, contractual o económica con terceros.
+6. RESTRICCIÓN NO COMERCIAL
+   a) Prohibición de Uso Comercial: No puedes usar, copiar, distribuir ni modificar el software con fines comerciales sin una licencia escrita separada del Autor.
+   b) Solo Uso No Comercial: Cualquier uso más allá de los ámbitos personales, educativos o sin fines de lucro queda prohibido.
+   c) Terminación automática: El incumplimiento de esta sección extingue inmediatamente tus derechos bajo esta licencia.
 
-Contribuciones: Mejoras, modificaciones, correcciones o extensiones propuestas por usuarios sobre el software, que pueden ser enviadas al autor o mantenedor. Estas no generan derechos económicos, pero podrán recibir créditos a criterio del autor.
+7. TERMINACIÓN
+   Tus derechos bajo esta licencia se pierden si incumples cualquier término, especialmente el de la Sección 6. Podrán restaurarse si solucionas la infracción dentro de los 30 días siguientes a la notificación del Autor.
 
-1. ACEPTACIÓN EXPRESA Y OBLIGATORIA
+8. EXENCIÓN DE GARANTÍAS
+   El software se proporciona TAL CUAL, sin garantías de ningún tipo, expresas o implícitas, incluidas garantías de comerciabilidad, idoneidad para un propósito particular o no infracción.
 
+9. LIMITACIÓN DE RESPONSABILIDAD
+   Bajo ninguna circunstancia el Autor será responsable de daños directos, indirectos, incidentales, especiales, punitivos o consecuentes derivados del uso o la imposibilidad de usar el software.
 
+10. ACCESO AL CÓDIGO FUENTE EN COPIAS DISTRIBUIDAS
+    Al distribuir el software en cualquier forma, debes proporcionar acceso al Código Fuente Correspondiente según esta licencia.
 
-Todo acto de uso, copia, modificación o distribución implica aceptación expresa, plena e incondicional de esta licencia.
+11. TELEMETRÍA Y PRIVACIDAD
+    a) Finalidad: Con tu consentimiento expreso, el software enviará datos anónimos (UUID de instalación, versión, marca de tiempo de arranque, SO e idioma, zona horaria/IP aproximada) a un servicio de análisis.
+    b) Datos no recolectados: No se recopilan datos personales identificables ni el contenido de documentos comparados.
+    c) Uso: Datos utilizados exclusivamente para medir instalaciones, seguimiento de versiones y errores, y estadísticas geográficas agregadas.
+    d) Consentimiento: Al ejecutar el software, consientes la telemetría. Puedes revocar el consentimiento desconectando Internet o eliminando %LOCALAPPDATA%\iGuanitas\uid.dat.
+    e) Retención: La telemetría se almacena conforme a la política de privacidad del servicio analítico y no se comparte con terceros.
 
-En caso de duda o incertidumbre, el usuario deberá cesar todo uso hasta recibir confirmación escrita del autor.
+12. REVISIÓN DE LICENCIA
+    El Autor puede publicar nuevas versiones de esta licencia. Puedes optar por adoptar nuevas versiones; ningún cambio obligatorio se aplicará sin al menos 90 días de aviso público previo.
 
-2. PERMISOS ESTRICTAMENTE LIMITADOS
-
-
-
-Solo se permite el uso en:
-
-Contextos personales o domésticos.
-
-Entornos educativos, académicos o de investigación sin fines comerciales, debidamente acreditados.
-
-Organizaciones sin fines de lucro con documentación oficial.
-
-
-Cualquier otro uso —especialmente el uso comercial— está estrictamente prohibido sin licencia comercial previa, firmada y por escrito otorgada por el autor.
-
-3. MODIFICACIONES Y CONTRIBUCIONES
-
-
-
-Los usuarios podrán modificar el software, adaptarlo o mejorarlo, siempre que:
-
-No obtengan beneficio económico directo ni indirecto de dichas modificaciones.
-
-Las modificaciones se mantengan bajo esta misma licencia si son redistribuidas.
-
-Cualquier contribución enviada al autor se entenderá como cedida sin fines lucrativos. El autor se reserva el derecho de integrar o no dichas contribuciones, con o sin atribución.
-
-
-4. PROHIBICIONES ABSOLUTAS
-
-
-
-Uso comercial en cualquier forma sin licencia firmada del autor.
-
-Sublicenciamiento, redistribución bajo otras licencias, o venta del software.
-
-Eliminación o alteración de créditos, avisos de derechos o marcas.
-
-Ingeniería inversa, descompilación o desensamblado con fines comerciales.
-
-Uso del software para entrenar, minar, inferir o alimentar sistemas de inteligencia artificial con fines comerciales o lucrativos.
-
-Uso indirecto que el autor determine, con base en criterios objetivos, como uso comercial encubierto (ver Anexo A).
-
-
-5. TERMINACIÓN AUTOMÁTICA
-
-
-
-Cualquier incumplimiento de esta licencia resultará en la suspensión automática e inmediata de todos los derechos de uso.
-
-El autor podrá notificar al infractor, otorgando un plazo máximo de 30 días naturales para subsanar la infracción.
-
-Si no se corrige o hay reincidencia, la licencia se da por terminada de forma irrevocable.
-
-Desde ese momento, todo uso, distribución o copia queda estrictamente prohibido, y podrán iniciarse acciones legales civiles o penales.
-
-6. EXCLUSIÓN DE GARANTÍAS Y RESPONSABILIDADES
-
-
-
-Este software se entrega “TAL CUAL”, sin garantías de ningún tipo, expresas o implícitas, incluyendo —pero no limitándose a—:
-
-Garantías de comerciabilidad
-
-Idoneidad para un propósito particular
-
-No infracción
-
-Disponibilidad, continuidad o funcionalidad libre de errores
-
-
-El autor no será responsable bajo ninguna circunstancia por:
-
-Daños directos o indirectos, pérdidas de datos, interrupciones de actividad, perjuicios económicos, daños morales o de reputación.
-
-Cualquier uso negligente, indebido o fraudulento del software por parte del usuario o terceros.
-
-Cualquier consecuencia derivada del uso, mal uso o imposibilidad de uso del software.
-
-
-El uso del software es bajo entero riesgo del usuario.
-
-7. RESOLUCIÓN DE CONFLICTOS
-
-
-
-Toda controversia será primero sometida a mediación obligatoria.
-
-Si no se resuelve, se acudirá a arbitraje vinculante conforme a las leyes mexicanas en la ciudad de Torreon, Cohuila.
-
-Los costos del arbitraje serán asumidos por la parte que haya incumplido o que retrase el proceso sin justificación razonable.
-
-8. DURACIÓN Y VIGENCIA
-
-
-
-Esta licencia entra en vigor desde el momento de su aceptación. Tiene vigencia indefinida, salvo terminación anticipada por incumplimiento.
-
-Una vez finalizada, el usuario pierde todos los derechos de uso, copia, modificación o distribución.
-
-9. PROTECCIÓN CONTRA USO INDEBIDO POR TERCEROS
-
-
-
-El licenciatario será solidariamente responsable por el uso indebido o distribución no autorizada por terceros a quienes haya dado acceso.
-
-El autor podrá iniciar acciones legales directas contra terceros infractores.
-
-10. ACTUALIZACIONES Y CAMBIOS
-
-
-
-El autor podrá emitir nuevas versiones de esta licencia.
-
-El usuario podrá adoptar nuevas versiones voluntariamente.
-
-Cambios obligatorios solo se aplicarán por causas legales y con al menos 90 días naturales de aviso previo público.
-
-ANEXO A – CRITERIOS ABSOLUTOS DE USO COMERCIAL
-
-Se considerará uso comercial:
-
-1. Venta, alquiler o sublicencia directa o indirecta.
-
-
-2. Uso en procesos internos o externos de entidades con fines de lucro.
-
-
-3. Ofrecimiento del software como servicio (SaaS), hosting, plataforma o funcionalidad pagada.
-
-
-4. Integración en productos comerciales.
-
-
-5. Uso en entornos de automatización o infraestructura con objetivos económicos.
-
-
-6. Entrenamiento, minería o inferencia en modelos de IA con fines comerciales.
-
-
-7. Cualquier forma de beneficio económico derivado del uso.
-
-
-
-Quedan excluidos de esta categoría los usos personales, educativos o sin fines de lucro debidamente acreditados.
-
-FIN DE LICENCIA
-
+FIN DE LA LICENCIA
 
 +++++++++++++++++++++++++++++++++++++++++++++
 
+GNU Affero General Public License
+Version 3, iGuanitas Source-Available Non-Commercial License v1.0
 
-iGuanitas Source-Available Non-Commercial License v1.0 (Definitive Shielded Version)
+Copyright (C) 2025 Author
 
-PREAMBLE
+Everyone is permitted to copy and distribute verbatim copies of this license document, but modifying it is not allowed.
 
-This license, based on the GNU AGPLv3, has been strengthened to thoroughly protect the author’s rights and strictly prohibit unauthorized commercial use, through clear procedures, precise definitions, sanctions, audit rights, and effective legal mechanisms to ensure full compliance.
-
-
----
+PREFACE
+This document defines the terms of the GNU Affero General Public License version 3, adapted and strengthened with non-commercial restrictions and telemetry/privacy provisions. Its purpose is to guarantee the freedom to use, study, share, and modify the software, while expressly prohibiting any commercial exploitation without a separate written license granted by the Author.
 
 TERMS AND CONDITIONS
 
-0. CLEAR AND ABSOLUTE DEFINITIONS
-
-This Software: Includes source code, binaries, documentation, data, scripts, interfaces, visual materials, and any partial or complete derivative.
-
-Commercial Use: Any use that directly or indirectly generates income, economic benefit, cost savings in profitable activities, commercial exploitation, integration into products or services for profit, provision of services based on the software, use in for-profit entities in any phase (development, testing, production, training, deployment), use in monetized public or private platforms, and any economic gain, tangible or intangible, resulting from use.
-
-Non-Profit Organization: A legally incorporated entity whose activity excludes profit distribution and holds official accreditation.
-
-Personal or Domestic Use: Exclusively individual, private use with no employment, business, or financial connection to third parties.
-
-Contributions: Improvements, modifications, bug fixes, or extensions submitted by users to the software. These contributions do not grant any economic rights but may be credited at the author’s discretion.
-
-
----
-
-1. EXPRESS AND MANDATORY ACCEPTANCE
-
-Any use, copy, modification, or distribution of the software constitutes full, express, and unconditional acceptance of this license.
-
-In case of doubt or uncertainty, the user must cease all use until they receive written confirmation from the author.
-
-
----
-
-2. STRICTLY LIMITED PERMISSIONS
-
-Use is only allowed in:
-
-Personal or domestic contexts.
-
-Educational, academic, or non-commercial research settings, with proper accreditation.
-
-Officially accredited non-profit organizations.
-
-
-Any other use—including commercial use—is strictly prohibited without prior written and signed commercial licensing from the author.
-
-
----
-
-3. MODIFICATIONS AND CONTRIBUTIONS
-
-Users may modify, adapt, or improve the software as long as:
-
-No direct or indirect financial benefit is obtained.
-
-Any redistribution of modified versions remains under this same license.
-
-Submitted contributions are considered non-commercial donations. The author reserves the right to include or exclude them, with or without credit.
-
-
-
----
-
-4. ABSOLUTE PROHIBITIONS
-
-Any form of commercial use without the author’s signed license.
-
-Sub-licensing, redistribution under a different license, or sale of the software.
-
-Removal or alteration of credits, notices, or trademarks.
-
-Reverse engineering, decompiling, or disassembly for commercial or competitive purposes.
-
-Use for training, mining, inference, or feeding AI systems for profit.
-
-Indirect use determined by the author as disguised commercial usage (see Annex A).
-
-
-
----
-
-5. AUTOMATIC TERMINATION
-
-Any breach of this license results in immediate and automatic suspension of all usage rights.
-
-The author may notify the violator, granting up to 30 calendar days to resolve the issue.
-
-If not corrected, or in case of repeat offenses, the license is irrevocably terminated.
-
-After termination, all use, distribution, or copying is strictly forbidden, and legal actions may be pursued.
-
-
----
-
-6. DISCLAIMER OF WARRANTIES AND LIMITATION OF LIABILITY
-
-This software is provided “AS IS”, without any kind of warranty, express or implied, including—but not limited to:
-
-Merchantability
-
-Fitness for a particular purpose
-
-Non-infringement
-
-Availability, stability, or error-free operation
-
-
-The author shall not be liable under any circumstances for:
-
-Direct or indirect damages, data loss, business interruption, financial losses, reputational or moral damages.
-
-Improper, negligent, or fraudulent use of the software by users or third parties.
-
-Any consequences arising from the use, misuse, or inability to use the software.
-
-
-Use of the software is entirely at the user’s own risk.
-
-
----
-
-7. DISPUTE RESOLUTION
-
-All disputes shall first be submitted to mandatory mediation.
-
-If unresolved, disputes shall proceed to binding arbitration under Mexican law, in Torreon, Cohuila..
-
-Arbitration costs will be borne by the breaching or unjustifiably delaying party.
-
-
----
-
-8. TERM AND VALIDITY
-
-This license becomes effective upon acceptance. It remains valid indefinitely unless terminated due to breach.
-
-Upon termination, the user loses all rights to use, copy, modify, or distribute the software.
-
-
----
-
-9. THIRD-PARTY MISUSE PROTECTION
-
-The licensee shall be jointly responsible for unauthorized use or distribution by third parties to whom they granted access.
-
-The author may take direct legal action against infringing third parties.
-
-
----
-
-10. UPDATES AND RE-LICENSING
-
-The author may release new versions of this license.
-
-Users may voluntarily adopt new versions.
-
-Mandatory changes will only be applied for legal reasons, with at least 90 calendar days’ public notice.
-
-
----
-
-ANNEX A – ABSOLUTE COMMERCIAL USE CRITERIA
-
-The following are considered commercial use:
-
-1. Direct or indirect sale, rental, or sublicensing.
-
-
-2. Use in any for-profit entity, regardless of stage.
-
-
-3. Offering the software as SaaS, hosting, or paid platform.
-
-
-4. Integration into commercial products.
-
-
-5. Automation or infrastructure use for financial benefit.
-
-
-6. Use in AI model training or inference for commercial purposes.
-
-
-7. Any financial gain resulting from usage.
-
-
-
-Excludes: Personal, educational, and properly accredited non-profit use.
-
-
----
+0. DEFINITIONS
+   a) "Software": The source code, object code, documentation, data, scripts, interfaces, visual materials, and any derivative works.
+   b) "You" (or "Licensee"): The individual or entity exercising rights under this license.
+   c) "Commercial Use": Any use that generates revenue or economic benefit, reduces costs in profit-driven activities, or involves integration into products or services for profit.
+   d) "Non-Commercial Use": Strictly personal, domestic, educational, academic, research use, or use by non-profit organizations.
+   e) "Propagate" and "Convey": Mean as defined in Sections 1 and 5 of AGPLv3.
+   f) "AGPLv3": GNU Affero General Public License version 3.
+
+1. SOURCE CODE
+   The "Corresponding Source" includes all source code needed to generate, install, and run the object code and to modify the work, including scripts to control compilation and installation.
+
+2. BASIC PERMISSIONS
+   You may run, propagate, and modify the Software for Non-Commercial Use only, subject to the restrictions in Section 6.
+
+3. PROTECTION AGAINST TPM LAWS
+   No covered work will be deemed part of an effective technological protection measure under applicable law.
+
+4. OBLIGATIONS WHEN PROPAGATING
+   a) Source Availability: If you convey object code, you must make the Corresponding Source available under the terms of this license.
+   b) Network Use: If you modify and run the Software as a network service, you must offer all users access to the Corresponding Source.
+
+5. DISTRIBUTION OF NON-SOURCE FORMS
+   You may distribute object code under the terms of Section 6 of AGPLv3, provided that you comply with all Non-Commercial Use restrictions.
+
+6. NON-COMMERCIAL RESTRICTION
+   a) Commercial Use Prohibited: You may not use, copy, distribute, or modify the Software for Commercial Use without a separate, written license from the Author.
+   b) Non-Commercial Only: Any use beyond personal, educational, or nonprofit contexts is prohibited.
+   c) Automatic Termination: Violation of this Section immediately terminates your rights under this license.
+
+7. TERMINATION
+   Your rights under this license are forfeited if you breach any term, especially Section 6. Rights may be reinstated if you cure the breach within 30 days of receiving notice from the Author.
+
+8. NO WARRANTY
+   The Software is provided "AS IS", without any warranties, express or implied, including warranties of merchantability, fitness for a particular purpose, or non-infringement.
+
+9. LIMITATION OF LIABILITY
+   Under no circumstances shall the Author be liable for any damages, whether direct, indirect, incidental, special, punitive, or consequential, arising from the use or inability to use the Software.
+
+10. SOURCE CODE ACCESS IN DISTRIBUTED COPIES
+    When you distribute the Software in any form, you must ensure that recipients have access to the Corresponding Source as specified in this license.
+
+11. TELEMETRY AND PRIVACY
+    a) Purpose: With your explicit consent, the Software will send anonymous data (installation UUID, version, startup timestamp, OS and language, timezone/IP approximation) to an analytics service.
+    b) Data Not Collected: No personally identifiable information or document contents are collected.
+    c) Use: Data is used solely to track active installations, version usage, error detection, and aggregated geographic statistics.
+    d) Consent: By running the Software, you consent to telemetry. You may revoke consent by disconnecting from the Internet or deleting %LOCALAPPDATA%\iGuanitas\uid.dat.
+    e) Retention: Telemetry is stored in accordance with the analytics provider’s privacy policy and is not shared with third parties.
+
+12. LICENSE REVIEW
+    The Author may publish new versions of this license. You may choose to adopt them; no mandatory changes take effect without at least 90 days’ public notice.
 
 END OF LICENSE
