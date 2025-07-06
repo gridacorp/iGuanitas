@@ -1,4 +1,5 @@
-import os
+#espejo.py
+import os 
 import pandas as pd
 import numpy as np
 from tkinter import filedialog, messagebox
@@ -45,12 +46,12 @@ def read_file(path):
 
     elif ext in (".xlsx", ".xls", ".xlsb"):
         try:
+            # Quitar engine explícito para dejar que pandas elija el más rápido
             sheets = pd.read_excel(
                 path,
                 sheet_name=None,
                 header=None,
-                dtype=str,
-                engine="openpyxl"
+                dtype=str
             )
             return sheets
         except Exception as e:
@@ -92,6 +93,7 @@ def read_file(path):
     else:
         raise Exception(f"Extensión no soportada: {ext}")
 
+
 def compare_lists(list1, list2):
     """Compara dos listas línea a línea y devuelve porcentaje de diferencia."""
     max_len = max(len(list1), len(list2))
@@ -100,6 +102,7 @@ def compare_lists(list1, list2):
     diffs = sum(1 for a, b in zip(list1, list2) if a != b)
     diffs += abs(len(list1) - len(list2))
     return round((diffs / max_len) * 100, 2)
+
 
 def compare_char_frequency(text1, text2):
     """Compara la frecuencia de caracteres entre dos listas de líneas y devuelve porcentaje de diferencia."""
@@ -112,8 +115,11 @@ def compare_char_frequency(text1, text2):
         return 0.0
     return round((total_diff / total_chars) * 100, 2)
 
+
 def compare_files(files, status_label, progress_bar):
-    """Compara archivos, hoja por hoja si Excel/CSV, línea y letras si texto."""
+    """Compara archivos:
+    - Excel/CSV: % Diferencia por celdas (célula a célula)
+    - Texto/Word/PDF/PPTX: % diferencia por líneas y caracteres."""
     global cancelar
     cancelar = False
 
@@ -121,6 +127,7 @@ def compare_files(files, status_label, progress_bar):
         messagebox.showerror("Error", "Selecciona al menos dos archivos para comparar.")
         return
 
+    # Leer todos los archivos
     all_content = {}
     for f in files:
         try:
@@ -128,73 +135,90 @@ def compare_files(files, status_label, progress_bar):
         except Exception as e:
             all_content[f] = f"Error: {e}"
 
+    # Calcular total de pares para la barra de progreso
+    items = list(all_content.items())
     total_pairs = 0
-    file_items = list(all_content.items())
-    for i in range(len(file_items)):
-        for j in range(i+1, len(file_items)):
-            cont1 = file_items[i][1]
-            cont2 = file_items[j][1]
-            if isinstance(cont1, dict) and isinstance(cont2, dict):
-                total_pairs += len(cont1) * len(cont2)
+    for i in range(len(items)):
+        for j in range(i+1, len(items)):
+            c1, c2 = items[i][1], items[j][1]
+            if isinstance(c1, dict) and isinstance(c2, dict):
+                total_pairs += len(c1) * len(c2)
             else:
                 total_pairs += 1
+    if total_pairs == 0:
+        messagebox.showerror("Error", "No hay elementos válidos para comparar.")
+        return
 
-    current = 0
     results = []
+    current = 0
 
-    for i in range(len(file_items)):
-        f1, cont1 = file_items[i]
-        for j in range(i+1, len(file_items)):
-            f2, cont2 = file_items[j]
+    # Comparación par a par
+    for i in range(len(items)):
+        f1, c1 = items[i]
+        for j in range(i+1, len(items)):
+            f2, c2 = items[j]
 
-            if isinstance(cont1, dict) and isinstance(cont2, dict):
-                # Excel/CSV: hoja vs hoja
-                for name1, df1 in cont1.items():
-                    for name2, df2 in cont2.items():
+            # Excel/CSV: comparación célula a célula
+            if isinstance(c1, dict) and isinstance(c2, dict):
+                for name1, df1 in c1.items():
+                    for name2, df2 in c2.items():
+                        # Igualar tamaño y rellenar con ""
                         mr = max(df1.shape[0], df2.shape[0])
                         mc = max(df1.shape[1], df2.shape[1])
-                        d1 = df1.reindex(range(mr), columns=range(mc), fill_value=np.nan)
-                        d2 = df2.reindex(range(mr), columns=range(mc), fill_value=np.nan)
-                        diff = (d1 != d2) & ~(d1.isna() & d2.isna())
-                        pct_line = round(diff.sum().sum() / (mr*mc) * 100, 2)
+                        d1 = df1.reindex(index=range(mr), columns=range(mc), fill_value="").astype(str)
+                        d2 = df2.reindex(index=range(mr), columns=range(mc), fill_value="").astype(str)
+
+                        # DEBUG opcional
+                        print(f"[DEBUG] Comparando {name1} ({mr}×{mc}) vs {name2} ({mr}×{mc})")
+
+                        # Vectorizar diff sobre numpy arrays
+                        diff = (d1.values != d2.values)
+                        pct = round(diff.sum() / (mr * mc) * 100, 2)
+
                         results.append({
                             "Archivo 1": os.path.basename(f1),
                             "Hoja 1": name1,
                             "Archivo 2": os.path.basename(f2),
                             "Hoja 2": name2,
-                            "% Diferencia por líneas": pct_line,
-                            "% Diferencia por letras": "N/A"
+                            "% Diferencia por celdas": pct,
+                            "% Diferencia por palabras": "N/A"
                         })
+
                         current += 1
-                        progress = current/total_pairs*100
+                        progress = current / total_pairs * 100
                         progress_bar['value'] = progress
                         status_label.config(text=f"Comparando {current}/{total_pairs}...")
-                        status_label.update_idletasks()
-                        progress_bar.update_idletasks()
+                        status_label.update()
+                        progress_bar.update()
+
             else:
-                # Texto: comparación por líneas y letras
-                try:
-                    pct_line = compare_lists(cont1, cont2)
-                    pct_char = compare_char_frequency(cont1, cont2)
-                except Exception:
-                    pct_line = pct_char = None
+                # Texto/Word/PDF/PPTX: comparación por líneas y caracteres
+                cont1 = c1 if isinstance(c1, list) else []
+                cont2 = c2 if isinstance(c2, list) else []
+                pct_line = compare_lists(cont1, cont2)
+                pct_char = compare_char_frequency(cont1, cont2)
+
                 results.append({
                     "Archivo 1": os.path.basename(f1),
                     "Hoja 1": "-",
                     "Archivo 2": os.path.basename(f2),
                     "Hoja 2": "-",
-                    "% Diferencia por líneas": pct_line if pct_line is not None else "Error",
-                    "% Diferencia por letras": pct_char if pct_char is not None else "Error"
+                    "% Diferencia por líneas": pct_line,
+                    "% Diferencia por palabras": pct_char
                 })
+
                 current += 1
-                progress = current/total_pairs*100
+                progress = current / total_pairs * 100
                 progress_bar['value'] = progress
                 status_label.config(text=f"Comparando {current}/{total_pairs}...")
-                status_label.update_idletasks()
-                progress_bar.update_idletasks()
+                status_label.update()
+                progress_bar.update()
 
+    # Mostrar resultados y opción de guardar
     summary = "\n".join(
-        f"{r['Archivo 1']} ({r['Hoja 1']}) vs {r['Archivo 2']} ({r['Hoja 2']}) → Líneas: {r['% Diferencia por líneas']}% | Letras: {r['% Diferencia por letras']}%"
+        f"{r['Archivo 1']} ({r.get('Hoja 1','-')}) vs {r['Archivo 2']} ({r.get('Hoja 2','-')}) → "
+        + (f"Celdas: {r['% Diferencia por celdas']}%" if r.get('% Diferencia por celdas') != "N/A"
+           else f"Líneas: {r['% Diferencia por líneas']}% | Letras: {r['% Diferencia por palabras']}%")
         for r in results
     )
     messagebox.showinfo("Resultado de comparación", summary)
