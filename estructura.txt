@@ -1,0 +1,46 @@
+Estructura de carpetas
+iGuanitas/
+├── iGuanitas.py
+├── espejo.py
+├── license.py
+├── metadatos.py
+├── acerca_de.py
+├── telemetry.py
+└── README.md
+
+
+
+iGuanitas.py
+├── Librerías estándar
+│   ├── tkinter
+│   │   ├── messagebox
+│   │   ├── ttk
+│   │   └── filedialog
+│   ├── threading
+│   ├── webbrowser
+│   └── urllib
+│       ├── request
+│       └── error
+│
+├── Módulos internos (archivos locales)
+│   ├── espejo.py
+│   │   ├── compare_files(files, status_label, progress_bar)
+│   │   └── cancelar (flag)
+│   │
+│   ├── license.py
+│   │   └── show_license_and_get_acceptance()
+│   │
+│   ├── metadatos.py
+│   │   └── mostrar_metadatos(parent_window)
+│   │
+│   ├── acerca_de.py
+│   │   └── mostrar_acerca_de()
+│   │
+│   └── telemetry.py
+│       ├── ping_ga_startup()
+│       └── ping_ga_event(event_name)
+│
+└── URLs de actualización (constantes)
+    ├── LOCAL_VERSION = "1.0.0"
+    ├── VERSION_URL       → Raw GitHub version.txt
+    └── DOWNLOAD_URL      → Raw GitHub download_url.txt
