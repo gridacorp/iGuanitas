@@ -126,4 +126,4 @@ TERMS AND CONDITIONS
 12. LICENSE REVIEW
     The Author may publish new versions of this license. You may choose to adopt them; no mandatory changes take effect without at least 90 days’ public notice.
 
-END OF LICENSE
+END OF LICENSE.
